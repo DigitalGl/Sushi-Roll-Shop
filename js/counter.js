@@ -63,14 +63,14 @@ function saveCart(cart) {
 
 // Рендеринг каталога
 function renderCatalog() {
-    const catalog = document.querySelector('.row').children[0];
+    const catalog = document.getElementById('catalog-row');
     catalog.innerHTML = '';
     rolls.forEach(roll => {
         const card = document.createElement('div');
         card.className = 'col-md-6';
         card.innerHTML = `
-            <div class="card mb-4" data-id="${roll.id}">
-                <img class="product-img" src="${roll.imgSrc}" alt="">
+            <div class="card" data-id="${roll.id}">
+                <img class="product-img" src="${roll.imgSrc}" alt="${roll.title}">
                 <div class="card-body text-center">
                     <h4 class="item-title">${roll.title}</h4>
                     <p><small data-items-in-box class="text-muted">${roll.itemsInBox} шт.</small></p>
@@ -113,7 +113,34 @@ function renderCatalog() {
         });
     });
 
+    // Обработчики добавления в корзину
+    document.querySelectorAll('[data-cart]').forEach(button => {
+        button.removeEventListener('click', addToCartHandler);
+        button.addEventListener('click', addToCartHandler);
+    });
+
     updatePrices();
+}
+
+function addToCartHandler() {
+    const card = this.closest('.card');
+    const id = card.getAttribute('data-id');
+    const title = card.querySelector('.item-title').textContent;
+    const weight = card.querySelector('.price__weight').textContent;
+    const price = parseInt(card.querySelector('.price__currency').getAttribute('data-base-price'));
+    const imgSrc = card.querySelector('.product-img').src;
+    const quantity = parseInt(card.querySelector('[data-counter]').textContent);
+
+    const existingItem = cart.find(item => item.id === id);
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        cart.push({ id, title, weight, price, imgSrc, quantity });
+    }
+
+    saveCart(cart);
+    renderCart();
+    showNotification(`${title} добавлен в корзину!`);
 }
 
 // Рендеринг корзины
@@ -240,30 +267,6 @@ function showNotification(message, type = 'success') {
     }, 2000);
 }
 
-// Добавление в корзину
-document.querySelectorAll('[data-cart]').forEach(button => {
-    button.addEventListener('click', () => {
-        const card = button.closest('.card');
-        const id = card.getAttribute('data-id');
-        const title = card.querySelector('.item-title').textContent;
-        const weight = card.querySelector('.price__weight').textContent;
-        const price = parseInt(card.querySelector('.price__currency').getAttribute('data-base-price'));
-        const imgSrc = card.querySelector('.product-img').src;
-        const quantity = parseInt(card.querySelector('[data-counter]').textContent);
-
-        const existingItem = cart.find(item => item.id === id);
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            cart.push({ id, title, weight, price, imgSrc, quantity });
-        }
-
-        saveCart(cart);
-        renderCart();
-        showNotification(`${title} добавлен в корзину!`);
-    });
-});
-
 // Поиск
 const searchInput = document.getElementById('search-input');
 searchInput.addEventListener('input', () => {
@@ -315,6 +318,31 @@ document.getElementById('currency-select').addEventListener('change', (e) => {
     currentCurrency = e.target.value;
     updatePrices();
     renderCart();
+});
+
+// Переключение темы
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = themeToggle.querySelector('.theme-icon');
+const html = document.documentElement;
+const body = document.body; // Добавляем ссылку на <body>
+
+// Загружаем сохраненную тему
+const savedTheme = localStorage.getItem('theme') || 'light';
+if (savedTheme === 'dark') {
+    html.classList.add('dark-theme');
+    body.classList.add('dark-theme'); // Добавляем класс к <body>
+    themeIcon.textContent = '☀️';
+} else {
+    themeIcon.textContent = '🌙';
+}
+
+// Обработчик переключения темы
+themeToggle.addEventListener('click', () => {
+    html.classList.toggle('dark-theme');
+    body.classList.toggle('dark-theme'); // Переключаем класс на <body>
+    const isDark = html.classList.contains('dark-theme');
+    themeIcon.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
 // Инициализация

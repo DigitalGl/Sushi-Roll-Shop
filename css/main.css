@@ -1,15 +1,177 @@
-body, html {
-    background-color: #F8F9F9;
+html, body {
+    background-color: #F8F9F9 !important; /* Явно задаем фон для светлой темы */
     height: 100%;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-h3, h4 {
-    font-family: 'Merriweather', serif;
+/* Темная тема */
+html.dark-theme,
+html.dark-theme body { /* Применяем к <body>, если класс dark-theme на <html> */
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
 }
 
+/* Общие элементы */
+.dark-theme {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+/* Шапка */
 .header {
+    background-color: #F8F9F9 !important; /* Белый фон в светлой теме */
     padding-top: 50px;
     padding-bottom: 50px;
+}
+
+.dark-theme .header {
+    background-color: #1a1a1a !important; /* Темный фон в темной теме */
+}
+
+/* Текст в шапке */
+.dark-theme .display-4,
+.dark-theme .lead {
+    color: #e0e0e0 !important;
+}
+
+/* Контейнер */
+.container {
+    background-color: #F8F9F9 !important; /* Белый фон в светлой теме */
+}
+
+.dark-theme .container {
+    background-color: #1a1a1a !important; /* Темный фон в темной теме */
+}
+
+/* Заголовки и текст */
+.dark-theme h1,
+.dark-theme h2,
+.dark-theme h3,
+.dark-theme h4,
+.dark-theme h5,
+.dark-theme h6,
+.dark-theme .item-title,
+.dark-theme .cart-item__title,
+.dark-theme .cart-total,
+.dark-theme .price__currency,
+.dark-theme .cart-item__weight,
+.dark-theme .price__weight {
+    color: #e0e0e0 !important;
+}
+
+/* Карточки товаров */
+.dark-theme .card {
+    background-color: #2c2c2c !important;
+    border-color: #444 !important;
+}
+
+/* Корзина */
+.dark-theme .cart-item {
+    border-bottom: 1px solid #444 !important;
+}
+
+.dark-theme .cart-item__desc {
+    color: #e0e0e0 !important;
+}
+
+/* Кнопки */
+.dark-theme .btn-outline-warning {
+    color: #ff8c00 !important;
+    border-color: #ff8c00 !important;
+}
+
+.dark-theme .btn-outline-warning:hover {
+    background-color: #ff8c00 !important;
+    color: #fff !important;
+}
+
+.dark-theme .btn-primary {
+    background-color: #0056b3 !important;
+    border-color: #0056b3 !important;
+}
+
+.dark-theme .btn-primary:hover {
+    background-color: #003d82 !important;
+    border-color: #003d82 !important;
+}
+
+.dark-theme .btn-danger {
+    background-color: #a71d2a !important;
+    border-color: #a71d2a !important;
+}
+
+.dark-theme .btn-danger:hover {
+    background-color: #8b1722 !important;
+    border-color: #8b1722 !important;
+}
+
+.dark-theme .btn-secondary {
+    background-color: #444 !important;
+    border-color: #444 !important;
+}
+
+.dark-theme .btn-secondary:hover {
+    background-color: #555 !important;
+    border-color: #555 !important;
+}
+
+/* Кнопка переключения темы */
+.dark-theme #theme-toggle {
+    background-color: #444 !important;
+    border-color: #444 !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-theme #theme-toggle:hover {
+    background-color: #555 !important;
+    border-color: #555 !important;
+}
+
+/* Поле поиска */
+.dark-theme .form-control {
+    background-color: #2c2c2c !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+}
+
+.dark-theme .form-control::placeholder {
+    color: #888 !important;
+}
+
+/* Счетчики */
+.dark-theme .items {
+    background: #444 !important;
+}
+
+.dark-theme .items__control:hover {
+    background: #ff8c00 !important;
+    color: #fff !important;
+}
+
+/* Уведомления */
+.dark-theme .notification-success {
+    background-color: #1a7c34 !important;
+}
+
+.dark-theme .notification-danger {
+    background-color: #a71d2a !important;
+}
+
+/* Корзина: пустое состояние */
+.dark-theme .alert-secondary {
+    background-color: #333 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Кастомное расстояние между кнопками (если me-4 не сработает) */
+#currency-select {
+    margin-right: 20px !important; /* Явный отступ */
+}
+
+/* Остальные стили без изменений */
+h3, h4 {
+    font-family: 'Merriweather', serif;
 }
 
 .product-img {
@@ -83,7 +245,7 @@ h3, h4 {
 }
 
 .price__weight {
-    color: #6c757d!important;
+    color: #6c757d !important;
     font-size: 80%;
     line-height: 1;
 }
@@ -144,7 +306,7 @@ h3, h4 {
 }
 
 .cart-item__weight {
-    color: #6c757d!important;
+    color: #6c757d !important;
     font-size: 80%;
     line-height: 1;
     margin-bottom: 15px;
@@ -216,4 +378,15 @@ h3, h4 {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Стили для отладки */
+.col-md-6 {
+    box-sizing: border-box;
+    max-width: 50%;
+}
+
+.card {
+    width: 100%;
+    box-sizing: border-box;
 }
